@@ -1,0 +1,16 @@
+# Langchain is a framework that allows you to build applications using LLMs
+
+-> langgraph is an extension of langchain aimed at building robust and 
+   stateful multi-actor applications with LLMs by modeling steps as edges 
+   and nodes in a graph.
+
+-> langserve: A package to deploy LangChain chains as REST APIs. Makes it easy 
+   to get a production ready API up and running.
+
+-> LangSmith: A developer platform that lets you debug, test, evaluate, and monitor 
+   LLM applications.
+
+
+
+Important links:
+https://python.langchain.com/docs/introduction/

@@ -1,0 +1,12 @@
+langchain 
+RAG - Chunking and different types of Splitters in langchain, Similarity Search and RetreivalQA Chain
+Chains - Custom LLM Chains + langchain built in StuffDocumentChain and MapReduceChain
+Tools and Agents - Langchain built-in tools and agents. (ex - create_sql_agent)
+Agents using langgraph -  Built in create_react_agent + Custom Agents/Graph and tools.
+Model Context Protocol (MCP) 
+Langgraph Memory Retention Techniques - (Long term and short term)
+You can also make small projects/notebooks for learning these topics and share repos here.
+
+
+-----------------------------------------------------------------------------------------------
+OpenAI Agents SDK for Python
