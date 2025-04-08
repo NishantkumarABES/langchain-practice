@@ -1,86 +1,65 @@
 import streamlit as st
+import time
+# st.header("🛠️ Database Configuration")
 
-# Function to test database connection
-def test_connection(db_type, config):
-    try:
-        if db_type == "MySQL":
-            import pymysql
-            conn = pymysql.connect(
-                host=config["host"],
-                user=config["user"],
-                password=config["password"],
-                database=config["database"],
-                port=int(config["port"])
-            )
-        elif db_type == "PostgreSQL":
-            import psycopg2
-            conn = psycopg2.connect(
-                host=config["host"],
-                user=config["user"],
-                password=config["password"],
-                database=config["database"],
-                port=int(config["port"])
-            )
-        elif db_type == "MongoDB":
-            from pymongo import MongoClient
-            conn = MongoClient(f"mongodb://{config['host']}:{config['port']}")
-        elif db_type == "SQLite":
-            import sqlite3
-            conn = sqlite3.connect(config["database"])
-        else:
-            st.error("Unsupported database type.")
-            return False
-        
-        conn.close()
-        return True
-    except Exception as e:
-        st.error(f"Connection failed: {e}")
-        return False
 
-# Streamlit UI
-st.title("🛠️ Database Configuration")
+col1, col2 = st.columns([2, 1])
+supported_databases = ["PostgreSQL", "MongoDB", "SQLite", "MySQL"]
 
-# Select database type
-db_type = st.selectbox("Select Database Type", ["MySQL", "PostgreSQL", "MongoDB", "SQLite"])
+def sqllite_config_form():
+    st.text_input("SQLite File Path", "database.db")
 
-# Database Configuration Form
-with st.form(key="db_form"):
-    st.subheader(f"🔧 {db_type} Configuration")
+def mysql_config_form():
+    pass
 
-    # Common fields for MySQL, PostgreSQL, MongoDB
-    if db_type in ["MySQL", "PostgreSQL", "MongoDB"]:
-        host = st.text_input("Host", "localhost")
-        port = st.text_input("Port", "3306" if db_type == "MySQL" else "5432" if db_type == "PostgreSQL" else "27017")
+def pg_config_form():
+    st.subheader("🔧 PostgreSQL Configuration")
+    col1, col2 = st.columns([3,1])
+    with col1: host = st.text_input("Host", "localhost")
+    with col2: port = st.text_input("Port", "5432")
+    col1, col2 = st.columns([1,1])
+    with col1: user = st.text_input("Username", "root")
+    with col2: database = st.text_input("Database Name")
+    col1, col2 = st.columns([2.5,1])
+    with col1: password = st.text_input("Password", type="password", 
+                                        label_visibility="collapsed", 
+                                        placeholder="Enter your password")
+    with col2: 
+        if st.button("Connect", use_container_width=True): pass
     
-    # Fields for MySQL & PostgreSQL
-    if db_type in ["MySQL", "PostgreSQL"]:
-        user = st.text_input("Username", "root")
-        password = st.text_input("Password", type="password")
-        database = st.text_input("Database Name")
 
-    # Field for MongoDB (No authentication for simplicity)
-    if db_type == "MongoDB":
-        database = st.text_input("Database Name")
 
-    # Field for SQLite
-    if db_type == "SQLite":
-        database = st.text_input("SQLite File Path", "database.db")
+def mongo_config_form():
+    pass
 
-    # Submit Button
-    submitted = st.form_submit_button("Save & Test Connection")
 
-    # On form submission
-    if submitted:
-        config = {
-            "host": host if db_type != "SQLite" else None,
-            "port": port if db_type in ["MySQL", "PostgreSQL", "MongoDB"] else None,
-            "user": user if db_type in ["MySQL", "PostgreSQL"] else None,
-            "password": password if db_type in ["MySQL", "PostgreSQL"] else None,
-            "database": database
-        }
 
-        if test_connection(db_type, config):
-            st.success(f"✅ Successfully connected to {db_type} database!")
-        else:
-            st.error(f"❌ Failed to connect to {db_type}.")
+
+
+
+
+with col1:
+    db_type = st.selectbox("Select Database Type", supported_databases)
+    db_config_functions = {
+        "SQLite": sqllite_config_form,
+        "MySQL": mysql_config_form,
+        "PostgreSQL": pg_config_form,
+        "MongoDB": mongo_config_form
+    }
+    with st.container(border=True):
+        db_config_functions.get(db_type)()
+
+with col2:
+    pass
+
+
+
+
+
+
+
+
+
+
+
 

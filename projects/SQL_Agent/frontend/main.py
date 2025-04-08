@@ -5,9 +5,9 @@ load_dotenv()
 st.set_page_config(page_title="AI SQL Agent", page_icon="🤖", layout="wide")
 
 authentication_page = st.Page("pages/authentication.py")
-chat_database = st.Page("pages/chat_database.py")
-manage_database = st.Page("pages/manage_database.py")
-configure_database = st.Page("pages/configure_database.py")
+chat_database = st.Page("pages/chat_database.py", title="Chat Database")
+manage_database = st.Page("pages/manage_database.py", title="Manage Database")
+configure_database = st.Page("pages/configure_database.py", title="Configure Database")
 
 
 if "isLogin" not in st.session_state:

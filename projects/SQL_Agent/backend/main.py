@@ -1,11 +1,13 @@
 import os, logging
-from datetime import datetime, timedelta
+from datetime import datetime
 import models, schemas
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from database import engine, get_db
 from passlib.context import CryptContext
+
+from services import llm_application
 
 logging.getLogger('passlib').setLevel(logging.ERROR)
 models.Base.metadata.create_all(bind=engine)
@@ -39,6 +41,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     if db_user: raise HTTPException(status_code=400, detail="Username already exists")
     hashed_password = get_password_hash(user.password)
     new_user = models.User(username=user.username, email=user.email, password=hashed_password)
+    new_user.created_on = datetime.now()
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
@@ -57,5 +60,4 @@ def login(user: schemas.UserLogin, db: Session = Depends(get_db)):
     
     return {'user': {"username": db_user.username, "email": db_user.email}, 'status_code': 200}
     
-
 

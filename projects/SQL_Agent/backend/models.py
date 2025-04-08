@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, TIMESTAMP
+from sqlalchemy import Column, Integer, String, TIMESTAMP, Boolean
 from database import Base
 
 class User(Base):
@@ -8,6 +8,5 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     email = Column(String, unique=True, index=True)
     password = Column(String)
-    otp = Column(String)
-    otp_created_on = Column(TIMESTAMP)
+    created_on = Column(TIMESTAMP)
 

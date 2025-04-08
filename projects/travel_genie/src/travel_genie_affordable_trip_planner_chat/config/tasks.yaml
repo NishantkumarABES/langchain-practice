@@ -1,0 +1,55 @@
+---
+data_retrieval:
+  description: Fetch real-time travel data including flight schedules, hotel availability,
+    transport options, and attractions for a trip from {current_location} to {destination}
+    by utilizing the ScrapeWebsiteTool and SeleniumScrapingTool. Ensure the gathered
+    data is current and covers cost information.
+  expected_output: A comprehensive dataset containing current travel options, pricing
+    details, and availability for flights, accommodations, and attractions between
+    {current_location} and {destination}.
+  async_execution: false
+  agent: travel_data_integration
+itinerary_construction:
+  description: Design a detailed day-by-day itinerary for a {trip_duration}-day trip
+    from {current_location} to {destination}. The itinerary should cover transportation,
+    accommodation, local commuting options, meal suggestions, and key attractions.
+  expected_output: A structured itinerary document outlining each day with specific
+    recommendations for transportation, lodging, dining, and activities.
+  async_execution: false
+  agent: itinerary_planner
+  context:
+  - data_retrieval
+cost_optimization:
+  description: Analyze the tentative itinerary to identify opportunities for cost
+    savings. Suggest affordable alternatives, cost-saving bundles, and provide an
+    approximate breakdown of daily expenses to align with a total budget of {budget}.
+  expected_output: A revised itinerary that includes cost-saving recommendations,
+    alternative options, and a detailed daily budget breakdown ensuring the trip remains
+    within {budget}.
+  async_execution: false
+  agent: cost_optimizer
+  context:
+  - itinerary_construction
+map_generation:
+  description: Generate interactive maps displaying pinned key locations such as accommodations,
+    dining spots, and attractions. Use the WebsiteSearchTool to create visual representations
+    of daily travel routes.
+  expected_output: Interactive maps with clearly marked points for hotels, restaurants,
+    attractions, and a visual route plan for each day of the trip.
+  async_execution: false
+  agent: map_integration
+  context:
+  - itinerary_construction
+personalization_verification:
+  description: Incorporate and verify user preferences within the final itinerary.
+    Adjust recommendations based on travel interests ({travel_interests}), travel
+    style ({travel_style}), and ensure travel essentials like visa info, local weather,
+    and currency tips are integrated.
+  expected_output: A fully tailored and verified travel plan that aligns with user
+    preferences and includes supplemental travel tips, ensuring a personalized experience.
+  async_execution: false
+  agent: personalization
+  context:
+  - itinerary_construction
+  - cost_optimization
+  - map_generation
